@@ -1,0 +1,31 @@
+{
+  "name": "pearson-api-sdk",
+  "homepage": "http://github.com/PearsonAPI/Pearson-Api-Sdk-Node",
+  "version": "0.0.1",
+  "description": "Client library for the Pearson v2 APIs",
+  "main": "index.js",
+  "repository": {
+          "type": "git",
+          "url": "git://github.com/PearsonAPI/Pearson-Api-Sdk-Node.git"
+        },
+  "dependencies": {
+    "restler": "2.0.1"
+    },
+  "directories": {
+    "lib": "./lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "node": ">=0.8"
+  },
+  "keywords": [
+    "Pearson", "api", "client library"
+  ],
+  "author": "Plug & Play",
+  "license": "MIT",
+  "engines": {
+          "node": ">=0.8"
+  }
+}
