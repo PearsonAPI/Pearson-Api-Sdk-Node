@@ -1,4 +1,6 @@
 var PearsonApis = require("../lib/pearson-sdk.js");
+var frisby = require('../node_modules/frisby');
+
 
 describe("Pearson API object", function() {
 	var travel =  PearsonApis.travel("akeyhere");
@@ -53,14 +55,6 @@ describe("The Travel API object", function() {
 		expect(travel.aroundtown.path).toEqual("around_town");
 	});
 	
-//
-	
-	// it("should encode the search terms in query format", function(){
-	// 	travel.addSearch("your search here");
-	// 	expect(travel.searchTerm).not.toEqual('search=your search here');
-	// 	expect(travel.searchTerm).toEqual('search=your%20search%20here');
-	// });
-
 	
 });
 
@@ -113,62 +107,95 @@ describe("Searching within specific datasets using the setDsets function", funct
 
 });
 
-describe("The getById function", function(){
+
+
+// Test Generic Search
+
 	var travel = PearsonApis.travel("JZNt3YM1veh1d6HDiCpA86vFJvuRefjw");
 	var test = travel.topten;
-	var rArt = test.getById("4av3a5NScQdhZ1");
+	var URL = test.searchFrisby();
 
-	it("should return a 200 ok from the server", function() {
-		expect(rArt.status).toEqual(200);
-	});
+frisby.create('GET travel results')
+  .get(URL)
+  .expectStatus(200)
+  .expectJSONTypes({
+    offset: Number,
+    limit: Number,
+    count: Number,
+    url: String,
+    results: Array
+  })
+  .expectJSON({
+  	status: 200,
+  	limit: 10, //this is the default
 
-	it("should contain a url in the returned object", function(){
-		expect(rArt.url).toBeDefined();
-	});
+  })
+  // 'afterJSON' automatically parses response body as JSON and passes it as an argument
+  .afterJSON(function(JSON) {
+    // You can use any normal jasmine-style assertions here
+    expect(JSON.results[0].url).toBeDefined;
+    expect(JSON.results[0].datasets).toBeDefined;
+    expect(JSON.results[0].id).toBeDefined;
 
-});
+    // Use data from previous result in next test
+    
+  })
+.toss();
 
-// Searching
+var travel2 = PearsonApis.travel("JZNt3YM1veh1d6HDiCpA86vFJvuRefjw");
+	var test2 = travel.topten;
+	var URL2 = test2.getByIdFrisby("4av3a5NScQdhZ1");
 
-describe("Searching", function(){
-	var travel = PearsonApis.travel("JZNt3YM1veh1d6HDiCpA86vFJvuRefjw");
-	var travel2 = PearsonApis.travel("JZNt3YM1veh1d6HDiCpA86vFJvuRefjw");
-	var test = travel.topten;
-	var dtest = travel2.topten.setDatasets("tt_newyor");
-	var srTrm = { search: "bar", offset: "5" };
-	var res = test.search(srTrm);
-	var dres = dtest.search(srTrm);
-
-	it("should take a JSON object as an argument", function(){
-		expect(test.search(srTrm)).toBeDefined();
-	});
-
-	it("should have defaults that are not undefined", function(){
-		expect(res.url).not.toContain("undefined");
-	});
-
-	it("should return a 200 ok from the server", function(){
-		expect(res.status).toEqual(200);
-	});
-
-	it("should return less results when refined by dataset", function(){
-		expect(res.count).toBeGreaterThan(dres.count);
-	});
-
-	it("should return articles that exist", function(){
-		expect(res.results[0]).toBeDefined();
-		expect(dres.results[0]).toBeDefined();
-
-	});
+frisby.create('GET travel results using ID')
+  .get(URL2)
+  .expectStatus(200)
+  .expectJSONTypes({
+    url: String,
+    id: String, //UID
+    result: Object
+  })
+  .expectJSON({
+  	status: 200,
+  })
+  .afterJSON(function(JSON) {
+    expect(JSON.result.datasets).toBeDefined;    
+  })
+.toss();
 
 
-});
+var travel3 = PearsonApis.travel("JZNt3YM1veh1d6HDiCpA86vFJvuRefjw");
+var travel4 = PearsonApis.travel("JZNt3YM1veh1d6HDiCpA86vFJvuRefjw");
+var dtest = travel4.topten.setDatasets("tt_newyor");
+var test3 = travel3.topten;
+var srTrm = { search: "bar", offset: "5" };
+var URL3= test3.searchFrisby(srTrm)
+var URL4 = dtest.searchFrisby(srTrm);
 
-describe("In the sandbox:", function(){
-	var trav = PearsonApis.travel()
-	var res = trav.topten.search();
+frisby.create('GET travel results using with refinements')
+  .get(URL3)
+  .expectStatus(200)
+  .expectJSONTypes({
+    url: String,
+    results: Array
+  })
+  .expectJSON({
+  	status: 200,
+  })
+  .afterJSON(function(JSON) {
+  	frisby.create('refine by dataset')
+  	.get(URL4)
+  	.expectStatus(200)
+  	.expectJSONTypes({
+  		url: String,
+  		results: Array
+  	})
+  	.afterJSON(function(JSON2) {
+  		  	expect(JSON.results.length).toBeGreaterThan(JSON2.results.length)
 
-	it("should return a response without an apikey", function(){
-		expect(res.status).toEqual(200);
-	});
-})
+  	})
+  	.toss();
+  })
+
+.toss();
+
+
