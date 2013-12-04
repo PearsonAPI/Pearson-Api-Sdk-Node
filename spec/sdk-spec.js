@@ -142,7 +142,7 @@ frisby.create('GET travel results')
   })
 .toss();
 
-var travel2 = PearsonApis.travel("JZNt3YM1veh1d6HDiCpA86vFJvuRefjw");
+	var travel2 = PearsonApis.travel("JZNt3YM1veh1d6HDiCpA86vFJvuRefjw");
 	var test2 = travel.topten;
 	var URL2 = test2.getByIdFrisby("4av3a5NScQdhZ1");
 
@@ -197,5 +197,110 @@ frisby.create('GET travel results using with refinements')
   })
 
 .toss();
+
+// Tests for FT
+
+describe("The FT Articles Api", function(){
+	var ft = PearsonApis.ftarticles("JZNt3YM1veh1d6HDiCpA86vFJvuRefjw");
+	var art = ft.articles;
+
+	it("should have the same base url", function(){
+		expect(ft.base).toEqual("http://api.pearson.com/v2/")
+	});
+
+	it("should have the Endpoint of articles available to it", function(){
+		expect(ft.articles).toBeDefined();
+	});
+
+});
+
+var ft = PearsonApis.ftarticles("JZNt3YM1veh1d6HDiCpA86vFJvuRefjw");
+var art = ft.articles;
+var ftsrch = { search: "mclaren" };
+var ftURL = art.searchFrisby(ftsrch);
+var ftsb = PearsonApis.ftarticles();
+var sbArt = ftsb.articles;
+var sbURL = sbArt.searchFrisby();
+
+frisby.create("Get FT articles")
+	.get(ftURL)
+	.expectStatus(200)
+	.expectJSONTypes({
+		url: String
+	})
+	.afterJSON(function(JSON) {
+		expect(JSON.results[1].article_url).toBeDefined
+	})
+.toss();
+
+frisby.create("Get FT sandbox article")
+	.get(sbURL)
+	.expectStatus(200)
+	.expectJSONTypes({
+		url: String,
+		results: Array
+	})
+	.afterJSON(function(JSON) {
+		expect(JSON.results.length).toBeGreaterThan(0);
+	})
+.toss();
+
+// Food and drink test
+	var food = PearsonApis.foodanddrink("JZNt3YM1veh1d6HDiCpA86vFJvuRefjw");
+	var recipes = food.recipes;
+	var fdsrch = { search: "chicken" }
+	var fdUrl = recipes.searchFrisby(fdUrl);
+
+describe("The Food Api", function(){
+
+	it("should have the same base url", function(){
+		expect(food.base).toEqual("http://api.pearson.com/v2/")
+	});
+
+	it("should have the Endpoint of recipes available to it", function(){
+		expect(food.recipes).toBeDefined();
+	});
+
+frisby.create("Get a recipe from foodanddrink")
+	.get(fdUrl)
+	.expectStatus(200)
+	.expectJSONTypes({
+		url: String,
+		results: Array
+	})
+	.afterJSON(function(JSON){
+		expect(JSON.results.length).toBeGreaterThan(0)
+	})
+.toss();
+
+
+});
+
+describe("The Dictionaries Api", function(){
+	var dict = PearsonApis.dictionaries("JZNt3YM1veh1d6HDiCpA86vFJvuRefjw");
+	var ent = dict.entries;
+	var dtUrl = ent.searchFrisby();
+
+	it("should have the same base url", function(){
+		expect(dict.base).toEqual("http://api.pearson.com/v2/")
+	});
+
+	it("should have the Endpoint of entries available to it", function(){
+		expect(dict.entries).toBeDefined();
+	});
+
+frisby.create("Get an entry from the dictionary")
+	.get(dtUrl)
+	.expectStatus(200)
+	.expectJSONTypes({
+		url: String,
+		results: Array
+	})
+	.afterJSON(function(JSON){
+		expect(JSON.results.length).toBeGreaterThan(0)
+	})
+.toss();
+
+});	
 
 
