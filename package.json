@@ -11,11 +11,15 @@
   "dependencies": {
     "restler": "2.0.1"
     },
+  "devDependencies": {
+    "jasmine-node": "1.11.0",
+    "frisby": "0.6.9"
+    },
   "directories": {
     "lib": "./lib"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jasmine-node spec"
   },
   "engines": {
     "node": ">=0.8"
