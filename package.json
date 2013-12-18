@@ -6,7 +6,7 @@
   "main": "index.js",
   "repository": {
           "type": "git",
-          "url": "git://github.com/PearsonAPI/Pearson-Api-Sdk-Node.git"
+          "url": "http://github.com/PearsonAPI/Pearson-Api-Sdk-Node.git"
         },
   "dependencies": {
     "restler": "2.0.1"
