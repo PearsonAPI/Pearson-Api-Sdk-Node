@@ -1,0 +1,9 @@
+{
+  "name": "PlugAndPlayProxy",
+  "version": "0.0.1",
+  "description": "Simple proxy for Pearson Plug and Play APIs",
+  "dependencies": {
+    "qs":"",
+    "url":""
+  }
+}
