@@ -18,6 +18,7 @@ There is a generic proxy included (in ppProxy) to aid keeping the API key separa
 
 ```Javascript
 	var proxiedApi = PearsonApis.travel("mySecretKey", "http://myproxy.com");
+	// NB this must include both key and proxy address.
 	// This will change the base url from api.pearson.com and append the apikey.  
 ```
 
