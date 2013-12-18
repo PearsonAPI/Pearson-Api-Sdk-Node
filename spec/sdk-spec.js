@@ -15,6 +15,19 @@ describe("Pearson API object", function() {
 
 });
 
+describe("The proxy object", function(){
+	var proxy = PearsonApis.travel("mySecretKey", "https://localhost:8080");
+	console.log(proxy);
+
+	it("should have a custom url base", function(){
+		expect(proxy.base).toEqual("https://localhost:8080/v2/");
+	});
+
+	it("should have an api key", function(){
+		expect(proxy.apikey).toEqual("mySecretKey");
+	});
+});
+
 describe("The Travel API object", function() {
 	var travel =  PearsonApis.travel("akeyhere");
 
