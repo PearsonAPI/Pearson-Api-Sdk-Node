@@ -7,10 +7,7 @@ A node module for the Pearson API SDK, the raw js version of which can be found 
 
 The documentation there explains how the Apis and SDK work, all of the methods described are available in index.js ready to be passed into whichever functions or applications you wish.  
 
-To install:  
-```Javascript
-npm install pearson-api-sdk
-```
+
 
 ###### The proxy:
 
