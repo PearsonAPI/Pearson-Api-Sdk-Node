@@ -126,7 +126,7 @@ describe("Searching within specific datasets using the setDsets function", funct
 
 	var travel = PearsonApis.travel("JZNt3YM1veh1d6HDiCpA86vFJvuRefjw");
 	var test = travel.topten;
-	var URL = test.searchFrisby();
+	var URL = test.getSearchUrl();
 
 frisby.create('GET travel results')
   .get(URL)
@@ -157,7 +157,7 @@ frisby.create('GET travel results')
 
 	var travel2 = PearsonApis.travel("JZNt3YM1veh1d6HDiCpA86vFJvuRefjw");
 	var test2 = travel.topten;
-	var URL2 = test2.getByIdFrisby("4av3a5NScQdhZ1");
+	var URL2 = test2.getIdUrl("4av3a5NScQdhZ1");
 
 frisby.create('GET travel results using ID')
   .get(URL2)
@@ -181,8 +181,8 @@ var travel4 = PearsonApis.travel("JZNt3YM1veh1d6HDiCpA86vFJvuRefjw");
 var dtest = travel4.topten.setDatasets("tt_newyor");
 var test3 = travel3.topten;
 var srTrm = { search: "bar", offset: "5" };
-var URL3= test3.searchFrisby(srTrm)
-var URL4 = dtest.searchFrisby(srTrm);
+var URL3= test3.getSearchUrl(srTrm)
+var URL4 = dtest.getSearchUrl(srTrm);
 
 frisby.create('GET travel results using with refinements')
   .get(URL3)
@@ -230,10 +230,10 @@ describe("The FT Articles Api", function(){
 var ft = PearsonApis.ftarticles("JZNt3YM1veh1d6HDiCpA86vFJvuRefjw");
 var art = ft.articles;
 var ftsrch = { search: "mclaren" };
-var ftURL = art.searchFrisby(ftsrch);
+var ftURL = art.getSearchUrl(ftsrch);
 var ftsb = PearsonApis.ftarticles();
 var sbArt = ftsb.articles;
-var sbURL = sbArt.searchFrisby();
+var sbURL = sbArt.getSearchUrl();
 
 frisby.create("Get FT articles")
 	.get(ftURL)
@@ -262,7 +262,7 @@ frisby.create("Get FT sandbox article")
 	var food = PearsonApis.foodanddrink("JZNt3YM1veh1d6HDiCpA86vFJvuRefjw");
 	var recipes = food.recipes;
 	var fdsrch = { search: "chicken" }
-	var fdUrl = recipes.searchFrisby(fdUrl);
+	var fdUrl = recipes.getSearchUrl(fdUrl);
 
 describe("The Food Api", function(){
 
@@ -292,7 +292,7 @@ frisby.create("Get a recipe from foodanddrink")
 describe("The Dictionaries Api", function(){
 	var dict = PearsonApis.dictionaries("JZNt3YM1veh1d6HDiCpA86vFJvuRefjw");
 	var ent = dict.entries;
-	var dtUrl = ent.searchFrisby();
+	var dtUrl = ent.getSearchUrl();
 
 	it("should have the same base url", function(){
 		expect(dict.base).toEqual("http://api.pearson.com/v2/")
